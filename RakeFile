@@ -1,17 +1,18 @@
 require 'rake'
 require 'yaml'
+require 'rdiscount'
 
 module HacknoteHelper
   ROOT_DIR          = File.expand_path(File.dirname(__FILE__))
   DOC_DIR           = File.join(ROOT_DIR, 'doc')
   PRESENTATION_DIR  = File.join(ROOT_DIR, 'templates')
   TMP_DIR           = File.join(ROOT_DIR, 'tmp')
-  VERSION           = YAML.load(IO.read(File.join(SRC_DIR, 'constants.yml')))['HACKNOTE_VERSION']
+  VERSION           = YAML.load(IO.read(File.join(ROOT_DIR, 'constants.yml')))['HACKNOTE_VERSION']
   
   # Possible options for PDoc syntax highlighting, in order of preference.
   SYNTAX_HIGHLIGHTERS = [:pygments, :coderay, :none]
 
-  %w[sprockets pdoc].each do |name|
+  %w[sprockets].each do |name|
     $:.unshift File.join(HacknoteHelper::ROOT_DIR, 'vendor', name, 'lib')
   end
 
@@ -35,16 +36,12 @@ module HacknoteHelper
     
   def self.sprocketize(options = {})
     options = {
-      :destination    => File.join(DIST_DIR, options[:source]),
+      :destination    => File.join(PRESENTATION_DIR , options[:source]),
       :strip_comments => true
     }.merge(options)
     
     require_sprockets
     load_path = [SRC_DIR]
-    
-    if selector_path = get_selector_engine(options[:selector_engine])
-      load_path << selector_path
-    end
     
     secretary = Sprockets::Secretary.new(
       :root           => File.join(ROOT_DIR, options[:path]),
@@ -54,31 +51,6 @@ module HacknoteHelper
     )
     
     secretary.concatenation.save_to(options[:destination])
-  end
-  
-  def self.build_doc_for(file)
-    mkdir_p TMP_DIR
-    temp_path = File.join(TMP_DIR, "hacknote.temp.js")
-    sprocketize(
-      :path => 'src',
-      :source => file,
-      :destination => temp_path,
-      :strip_comments => false
-    )
-    rm_rf DOC_DIR
-    
-    highlighter = syntax_highlighter
-    puts "Using syntax highlighter: #{highlighter}\n"
-    
-    PDoc.run({
-      :source_files => [temp_path],
-      :destination => DOC_DIR,
-      :index_page => 'README.markdown',
-      :syntax_highlighter => highlighter,
-      :markdown_parser => :bluecloth
-    })
-    
-    rm_rf temp_path
   end
   
   def self.syntax_highlighter
@@ -128,10 +100,6 @@ module HacknoteHelper
     require_submodule('Sprockets', 'sprockets')
   end
   
-  def self.require_pdoc
-    require_submodule('PDoc', 'pdoc')
-  end
-  
   def self.get_submodule(name, path)
     require_git
     puts "\nYou seem to be missing #{name}. Obtaining it via git...\n\n"
@@ -167,28 +135,17 @@ module HacknoteHelper
   end
 end
 
-task :default => [:dist, :package, :clean_package_source]
+task :default => [:clean, :dist]
 
 desc "Builds the distribution."
 task :dist do
   HacknoteHelper.sprocketize(
-    :path => 'src',
-    :source => 'prototype.js',
-    :selector_engine => ENV['SELECTOR_ENGINE'] || HacknoteHelper::DEFAULT_SELECTOR_ENGINE
+    :path => 'app',
+    :source => 'application.js'
   )
 end
 
-Rake::PackageTask.new('hacknote', HacknoteHelper::VERSION) do |package|
-  package.need_tar_gz = true
-  package.package_dir = HacknoteHelper::PKG_DIR
-  package.package_files.include(
-    '[A-Z]*',
-    'dist/hacknote.js',
-    'lib/**',
-    'src/**'
-  )
-end
-
-task :clean_package_source do
-  rm_rf File.join(HacknoteHelper::PKG_DIR, "hacknote-#{HacknoteHelper::VERSION}")
+desc "Cleans the distribution directory."
+task :clean do
+  rm_rf File.join(HacknoteHelper::PRESENTATION_DIR, "hacknote-#{HacknoteHelper::VERSION}")
 end
