@@ -4,3 +4,6 @@
 [submodule "vendor/rdiscount"]
 	path = vendor/rdiscount
 	url = git://github.com/rtomayko/rdiscount.git
+[submodule "vendor/prototype"]
+	path = vendor/prototype
+	url = git://github.com/sstephenson/prototype.git

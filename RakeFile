@@ -4,8 +4,7 @@ require 'rdiscount'
 
 module HacknoteHelper
   ROOT_DIR          = File.expand_path(File.dirname(__FILE__))
-  DOC_DIR           = File.join(ROOT_DIR, 'doc')
-  PRESENTATION_DIR  = File.join(ROOT_DIR, 'templates')
+  PRESENTATION_DIR  = File.join(ROOT_DIR, 'presentation')
   TMP_DIR           = File.join(ROOT_DIR, 'tmp')
   VERSION           = YAML.load(IO.read(File.join(ROOT_DIR, 'constants.yml')))['HACKNOTE_VERSION']
   
@@ -33,20 +32,30 @@ module HacknoteHelper
     puts "  http://book.git-scm.com/2_installing_git.html"
     exit
   end
-    
+  
+  def self.parse_slides(raw = '')
+    # Returns an array of slide objects
+    # => data
+    # => content
+  end
+  
+  def self.htmlize(content = 'No content')
+    return RDiscount.new(content).to_html
+  end
+  
   def self.sprocketize(options = {})
     options = {
-      :destination    => File.join(PRESENTATION_DIR , options[:source]),
+      :destination    => File.join(PRESENTATION_DIR , 'hacknote.js'),
       :strip_comments => true
     }.merge(options)
     
     require_sprockets
-    load_path = [SRC_DIR]
+    load_path = ['app', 'vendor']
     
     secretary = Sprockets::Secretary.new(
-      :root           => File.join(ROOT_DIR, options[:path]),
+      :root           => ROOT_DIR,
       :load_path      => load_path,
-      :source_files   => [options[:source]],
+      :source_files   => ['hacknote.js'],
       :strip_comments => options[:strip_comments]
     )
     
@@ -139,10 +148,8 @@ task :default => [:clean, :dist]
 
 desc "Builds the distribution."
 task :dist do
-  HacknoteHelper.sprocketize(
-    :path => 'app',
-    :source => 'application.js'
-  )
+  # Concatinate the scripts to a single file
+  HacknoteHelper.sprocketize()
 end
 
 desc "Cleans the distribution directory."
