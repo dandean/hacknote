@@ -24,11 +24,11 @@ GitHub is for showing people what you made out of code.
 # GitHub is for Working
 
 * Source code repository for projects (branches, tags, diffs, etc)
-** [image]
+  * [image]
 * Issue tracking
-** [image]
+  * [image]
 * Project-specific wikis
-** [image]
+  * [image]
 
 ## But this is the boring stuff!
 

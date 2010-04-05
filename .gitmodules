@@ -7,3 +7,6 @@
 [submodule "vendor/prototype"]
 	path = vendor/prototype
 	url = git://github.com/sstephenson/prototype.git
+[submodule "vendor/mustache"]
+	path = vendor/mustache
+	url = git://github.com/defunkt/mustache.git
