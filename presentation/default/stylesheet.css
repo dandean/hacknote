@@ -162,7 +162,7 @@ body {
               list-style-image: none;
               width: 200px;
               height: 200px;
-              -webkit-border-radius: 5px;
+              border-radius: 5px;
               -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
             }
               div#github-is-for-working ul ul li img {
@@ -198,5 +198,22 @@ body {
           padding: 0 1em;
         }
 
+    div#forking-on-github { }
+      div#forking-on-github img {
+        float: right;
+        width: 450px;
+        margin: 0 0 1em 1em;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+      }
+      
+    div#less-drunk-more-smart {}
+      div#less-drunk-more-smart img {
+        float: right;
+        width: 450px;
+        margin: 0 0 1em 1em;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+      }
 
   

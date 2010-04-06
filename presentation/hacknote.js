@@ -10739,9 +10739,11 @@ var Application = Class.create({
     document.on("keyup", function(e) {
       switch (e.keyCode) {
         case Event.KEY_RIGHT:
+        case 34: // page down
           this.next();
           break;
         case Event.KEY_LEFT:
+        case 33: // page up
           this.back();
           break;
         case Event.KEY_UP:

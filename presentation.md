@@ -50,6 +50,7 @@ GitHub is a Community:
 # Forking on GitHub
 ## GitHub fosters the distributed nature of Git
 
+![Network Graph](images/graph.png)
 Forking is the action of cloning someone else's repository and moving it to your
 workspace where it can be modified in any way you like.
 
@@ -67,6 +68,7 @@ GitHub is a Community:
 
 # Less drunk, more smart
 
+![Network Graph](images/drunk.png)
 Kind of like Facebook or Twitter, you can **follow users**. But instead of
 finding out how drunk they are, you get to see **the cool shit they're making**.
 
