@@ -1,48 +1,43 @@
 !SLIDE.title
 
-
 # GitHub
-## There's a party in my COMMITS
-## and you're invited
+## There's a party in my _commits_ <br /> and you're invited
 
 
 !SLIDE.section
-- fx appear
-- $ whatIsGitHub
-
+-> slide
 
 # What is GitHub?
+## GitHub is for showing people what you made out of code.
 
-Remote source code repository hosting with an eye towards _social interaction_.
-
-GitHub is for showing people what you made out of code.
+Remote source code repository hosting with an eye towards __social interaction__.
 
 
 !SLIDE.section
-
+-> slide
 
 # GitHub is for Working
 
 * Source code repository for projects (branches, tags, diffs, etc)
-  * [image]
+  * ![Repositories](images/repositories.png)
 * Issue tracking
-  * [image]
+  * ![Issue Tracking](images/issues.png)
 * Project-specific wikis
-  * [image]
+  * ![Wiki's](images/wiki.png)
 
-## But this is the boring stuff!
+## But this is just the boring stuff.
 
 
 !SLIDE.section
-
+-> bounce
 
 # GitHub is a Community
-## And this community likes to Fork
+## Fork me on GitHub
 
 * Fork repositories
 * Follow users
 * Watch projects
-* Comment on source code
+* Comment on lines of source code
 * Open bugs
 * Submit patches
 * Versioned code-snippets via Gist
@@ -50,6 +45,7 @@ GitHub is for showing people what you made out of code.
 
 !SLIDE
 
+GitHub is a Community:
 
 # Forking on GitHub
 ## GitHub fosters the distributed nature of Git
@@ -67,6 +63,7 @@ merge their changes back into your fork.
 
 !SLIDE
 
+GitHub is a Community:
 
 # Less drunk, more smart
 
@@ -78,77 +75,82 @@ as they make it.
 
 Plus your mom won't try to friend you here.
 
-[image drunk]
-
 
 !SLIDE
 
+GitHub is a Community:
 
 # Watch the future
 
 Watching specific repositories lets you see changes and fixes going into your
 favorite frameworks and libraries as they happen.
 
-[image watching, etc]
-
 
 !SLIDE
 
+GitHub is a Community:
 
 # Continuous Code Review via Comments
 
-Code review becomes a painless and natural part of the development process.
+Code review becomes a __painless and natural part of the development process__.
 
-We all become better through continuous discussion and feedback.
+Continuous feedback makes us better developers.
 
 
 !SLIDE
 
+GitHub is a Community:
 
-# Shit's broke!
+# "Shit's broke!"
 
 File bugs on **any** project, get notified when they're fixed.
 
 
 !SLIDE
 
+GitHub is a Community:
 
-# Shit's broke, but here's the fix!
+# "Shit's broke, but here's the fix!"
 
 Submit patches and bug fixes to **any** project.
 
-
-!SLIDE.section
-
-
-# Open source is moving to GitHub
-
-* Rails
-* Prototype
-* jQuery
-* MooTools
-* Robert Penner
-* CouchDB
-* Sinatra
-* Node.js
-* Express
-* PhoneGap
-* Cufon
-* Symfony
+* Contribute back to the community
+* Submit fixes to the source, where they belong
+* Build global relationships in your discipline
 
 
-!SLIDE.section
+!SLIDE
 
+GitHub is a Community:
 
-# Gi`s`t is for Snippets
+# `gist` is for Snippets
 
 Save and share code snippets with Gist
 
 Edit, fork, etc -- they're compact, lightweight git repositories!
 
-[image gist]
+
+!SLIDE.section
+-> bounce
+
+# Open source <br />is moving to GitHub:
+
+* Rails
+* Prototype
+* jQuery
+* MooTools
+* CouchDB
+* Express
+* Robert Penner
+* Sinatra
+* Node.js
+* PhoneGap
+* Cufon
+* Symfony
+* YQL & YUI
+* PostgreSQL
+* Facebook
+* and many, many more...
 
 
-
-
-
+!SLIDE

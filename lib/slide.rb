@@ -7,14 +7,15 @@ module Hacknote
     def initialize(content = '')
       # save raw content
       @raw = content.strip
-    
+      
       headers = []
       content = []
     
       past_headers = false
     
       @raw.split(/\n/m).each{|line|
-        if !past_headers && !line.match(/^(!SLIDE|- )/)
+        # match any header
+        if !past_headers && !line.match(/^(!SLIDE|->)/)
           past_headers = true
         end
       
@@ -34,9 +35,10 @@ module Hacknote
         "default"
     
       # Find custom handler spec
-      handler = headers.find {|h| h.match(/^- \$/) }
+      handler = headers.find {|h| h.match(/^->/); }
+      
       if !handler.nil?
-        handler = handler.sub(/^- \$/, '').strip
+        handler = handler.sub(/^->/, '').strip
       end
       @handler = handler
     end

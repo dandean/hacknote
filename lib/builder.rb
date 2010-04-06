@@ -12,6 +12,7 @@ module Hacknote
       
       @source_path = source_path
       @save_path = save_path
+      @theme = theme
       @theme_path = File.join(THEME_DIR, theme)
       
       raise IOError.new("Theme directory does not exist") if !File.directory?(@theme_path)
@@ -39,18 +40,29 @@ module Hacknote
       # - Pull themes/mytheme/template.erb
       Mustache.template_path = THEME_DIR
       
+      # concatinate all slide html
+      content = ''
+      @slides.each{|s|
+        content << "\n<div class='slide' data-type='#{s.type}' data-handler='#{s.handler}'>\n"
+        content << "<div class='content'>"
+        content << s.html.strip
+        content << "\n</div>\n"
+        content << "\n</div>\n"
+      }
       
-      puts Mustache.render_file("index", :wow => "cool")
-      
-      # - Inject slide html into template content
-      # - Return string
+      # inject data into html
+      return Mustache.render_file("index", {
+        :theme => @theme,
+        :content => content
+      })
     end
     
     def save
-      self.to_html
-      # Save html to the path
       # Move theme resources into path
-      # Move hacknote dependencies  into path
+      cp_r(@theme_path, @save_path)
+
+      # Save html to the path
+      File.open(File.join(@save_path, 'index.html'), 'w'){|f| f.write(self.to_html) }
     end
     
   end

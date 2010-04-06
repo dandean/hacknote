@@ -1,5 +1,6 @@
 require 'rake'
 require 'mustache'
+require 'fileutils'
 require 'lib/hacknote.rb'
 require 'lib/helper.rb'
 require 'lib/builder.rb'
@@ -14,5 +15,5 @@ end
 
 desc "Cleans the distribution directory."
 task :clean do
-  rm_rf File.join(Hacknote::PRESENTATION_DIR, "/")
+  rm_rf File.join(Hacknote::SAVE_DIR, "/")
 end
