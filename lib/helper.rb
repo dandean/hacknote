@@ -1,6 +1,40 @@
+# TODO: update the "build" method so that it merges
+# the specified presentation with its theme, and saves it into the 
+# presentations folder.
+# => merge media directories (fonts is a subdirectory)
+# => merge stylesheets: system, theme, local
+# => SPROCKETIZE: concatinate scripts: system, theme, local
+
+# TODO:
+# => fix vendor & require mess
+# => switch to emile for animations
+# => syntax highlighting (pygments)
+
+
 module Hacknote
 
   class Helper
+    
+    # Creates a url-safe path from a string
+    def self.pathize(value)
+      # replace repeating spaces & dashes with an underscore
+      # remove all non-word chars
+      # replace underscores with dashes
+      value.strip.downcase.gsub(/[\s-]+/, '_').gsub(/\W/, '').gsub(/_/, '-')
+    end
+    
+    # Returns a unique version of the given path, ie, my-path -> "my-path-1"
+    def self.unique_path(path)
+      unique = path
+      i = 0;
+      while File.directory?(unique)
+        i = i.succ
+        unique = "#{path}-#{i.succ}"
+        raise NameError, 'There are already at least 20 of these' if i >= 20
+      end
+      unique
+    end
+    
     def self.has_git?
       begin
         `git --version`
@@ -22,17 +56,30 @@ module Hacknote
     def self.htmlize(content = 'No content')
       return RDiscount.new(content).to_html
     end
-  
-    def self.sprocketize(options = {})
+    
+    # => MOVE THIS TO BUILDER
+    def self.sprocketize(name, options = {})
+      # Concatinate scripts:
+      # => system, theme, local
+      #
+      # load project yaml to get theme
+      # add project and theme script dirs to load path
+      #
+      # app/hacknote.js:
+      # require <theme>
+      # require <project>
+
       options = {
-        :destination    => File.join(SAVE_DIR , 'hacknote.js'),
+        :destination    => File.join(project_save_path , 'hacknote.js'),
         :strip_comments => true
       }.merge(options)
     
-      require_sprockets
+      # require_sprockets
     
-      Dir.mkdir(SAVE_DIR) unless File.directory?(SAVE_DIR)
-    
+      Dir.mkdir(OUTPUT_DIR) unless File.directory?(OUTPUT_DIR)
+      
+      # => add theme script path
+      # => add workspace script path
       load_path = ['app', 'vendor']
 
       secretary = Sprockets::Secretary.new(
@@ -45,10 +92,71 @@ module Hacknote
       secretary.concatenation.save_to(options[:destination])
     end
     
+    def self.list(dev=true)
+      dir = (dev) ? WORKSPACE_DIR : OUTPUT_DIR
+      Dir.entries(dir).select do |d|
+        d.match(/^\w/)
+      end
+    end
+    
+    def self.create(name = nil, theme = nil)
+      name = 'Untitled Hacknote' if name.nil?
+      theme = 'default' if theme.nil?
+      
+      path = File.join(WORKSPACE_DIR, pathize(name))
+      path = unique_path(path)
+      
+      if File.directory?(File.join(THEME_DIR, theme))
+        
+        libpath = File.join(LIB_DIR, 'base')
+        
+        # Make sure the base template exists
+        if File.directory?(libpath)
+
+          # Once path and theme are found, build stuff
+          File::makedirs(path)
+          
+          # copy libpath contents into presentation
+          cp_r("#{libpath}/.", path, :verbose => false)
+          
+          # inject info into the yaml file
+          metapath = File.join(path, 'meta.yml')
+          
+          yaml = YAML.load_file(metapath)
+          yaml['theme'] = theme
+          yaml['title'] = name
+          yaml['author'] = `git config --get user.name`.strip
+          yaml['email'] = `git config --get user.email`.strip
+          
+          File.open(metapath, File::CREAT|File::TRUNC|File::RDWR, 0777) do |f|
+            f.write(YAML.dump(yaml))
+          end
+
+        else
+          raise NameError, "Cannot find base presentation files."
+        end
+        
+      else
+        raise NameError, "Unknown theme '#{theme}'."
+      end
+    end
+    
     # Builds the distribution
-    def self.build
+    def self.build(project = 1)
+      
+      if project.is_a?(Numeric)
+        project = list[project - 1]
+      end
+      
+      source = File.join(WORKSPACE_DIR, project)
+      destin = File.join(OUTPUT_DIR, project)
+      puts source
+      puts destin
+      
       # Concatinate the scripts to a single file
-      sprocketize
+      #sprocketize(project)
+
+      return
 
       # Build
       Builder.new(SOURCE_FILE, SAVE_DIR).save
@@ -97,11 +205,15 @@ module Hacknote
       end
     end
   
+    # DELETE
     def self.require_sprockets
+      throw Error.new
       require_submodule('Sprockets', 'sprockets')
     end
   
+    # DELETE
     def self.get_submodule(name, path)
+      throw Error.new
       require_git
       puts "\nYou seem to be missing #{name}. Obtaining it via git...\n\n"
     
@@ -113,8 +225,10 @@ module Hacknote
       puts "  $ git submodule update vendor/#{path}"
       false
     end
-  
+    
+    # DELETE
     def self.require_submodule(name, path)
+      throw Error.new
       begin
         require path
       rescue LoadError => e

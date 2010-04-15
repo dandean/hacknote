@@ -1,19 +1,83 @@
 require 'rake'
 require 'mustache'
+require 'ftools'
 require 'fileutils'
+require 'yaml'
 require 'lib/hacknote.rb'
 require 'lib/helper.rb'
 require 'lib/builder.rb'
 require 'lib/slide.rb'
 
-task :default => [:clean, :dist]
+task :default => [:list]
 
-desc "Builds the distribution."
-task :dist do
-  Hacknote::Helper.build
+desc "Builds the project."
+task :dist, :project do |t, args|
+  args.with_defaults(:project => "1")
+  
+  project = args.project
+
+  if project.match(/^\d+$/)
+    # Convert project arg to Integer if it's numeric
+    project = Integer(project) 
+  end
+
+  Hacknote::Helper.build(project)
+end
+
+desc "List all project in your workspace"
+task :list do
+  Hacknote::Helper.list.each_with_index{|p, i|
+    puts "#{i + 1}: #{p}"
+  }
+end
+
+desc "Opens the project in TextMate"
+task :mate, :project do |t, args|
+  projects = Hacknote::Helper.list
+  name = args.project
+  
+  if args.project.match(/^\d+$/)
+    # Index-based request
+    name = projects[Integer(args.project) - 1]
+  end
+
+  path = File.join(Hacknote::WORKSPACE_DIR, name || "fuckthisshit")
+
+  if File.directory?(path)
+    puts "Trying to open '#{path}' with TextMate!"
+    Kernel.system("mate #{path}")
+  else
+    puts "Project #{args.project} could not be opened because it does not exist."
+  end
+end
+
+desc "Generates a new Hacknote presentation"
+task :generate, :name, :theme do |t, args|
+  Hacknote::Helper.create(args.name, args.theme)
+end
+
+desc "Runs the project in a browser"
+task :run, :project do |t, args|
+  projects = Hacknote::Helper.list(false)
+  name = args.project
+  
+  if args.project.match(/^\d+$/)
+    # Index-based request
+    name = projects[Integer(args.project) - 1]
+  end
+  
+  path = File.join(Hacknote::OUTPUT_DIR, name || "fuckthisshit")
+  puts path
+  
+  if File.directory?(path)
+    puts "Trying to run '#{path}' in a browser!"
+    Kernel.system("open #{path}/index.html")
+  else
+    puts "Project '#{args.project}' could not be run because it does not exist."
+  end
 end
 
 desc "Cleans the distribution directory."
 task :clean do
-  rm_rf File.join(Hacknote::SAVE_DIR, "/")
+  rm_rf File.join(Hacknote::OUTPUT_DIR, "/.")
 end

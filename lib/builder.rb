@@ -1,7 +1,7 @@
 module Hacknote
 
   class Builder
-    attr_reader :slides, :html
+    attr_reader :slides, :html, :meta
 
     def initialize(source_path, save_path, theme = 'default')
       content = ''
@@ -64,6 +64,12 @@ module Hacknote
       # Save html to the path
       File.open(File.join(@save_path, 'index.html'), 'w'){|f| f.write(self.to_html) }
     end
+    
+    private
+      # => TODO !!!
+      def sprocketize
+        return self
+      end
     
   end
 

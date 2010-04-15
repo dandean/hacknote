@@ -1,0 +1,219 @@
+/**
+ * CUSTOM FONTS
+ *----------------------------------------------------------------------------*/
+
+/** Avenir **/
+@font-face { /* Roman */
+  font-family: Jeniver;
+  src: local("AvenirLTStd-Roman"),
+       url(/fonts/AvenirLTStd-Roman.otf);
+  font-style: normal;
+}
+  @font-face {
+    font-family: Jeniver;
+    src: local("AvenirLTStd-Oblique"),
+         url(/fonts/AvenirLTStd-Oblique.otf);
+    font-style: italic;
+  }
+
+@font-face { /* Light */
+  font-family: Jeniver;
+  src: local("AvenirLTStd-Light"),
+       url(/fonts/AvenirLTStd-Light.otf);
+  font-weight: light;
+  font-style: normal;
+}
+  @font-face {
+    font-family: Jeniver;
+    src: local("AvenirLTStd-LightOblique"),
+         url(/fonts/AvenirLTStd-LightOblique.otf);
+    font-weight: light;
+    font-style: italic;
+  }
+
+@font-face { /* Black */
+  font-family: Jeniver;
+  src: local("AvenirLTStd-Black"),
+       url(/fonts/AvenirLTStd-Black.otf);
+  font-weight: bold;
+  font-style: normal;
+}
+  @font-face {
+    font-family: Jeniver;
+    src: local("AvenirLTStd-BlackOblique"),
+         url(/fonts/AvenirLTStd-BlackOblique.otf);
+    font-weight: bold;
+    font-style: italic;
+  }
+
+/**
+ * BASELINE UI STYLES
+ *----------------------------------------------------------------------------*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Jeniver";
+  font-weight: light;
+  position: relative;
+  overflow: hidden;
+}
+  div#stage {
+    position: absolute;
+    width: 1024px;
+    height: 768px;
+  }
+    div.slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0px;
+      top: 0px;
+      overflow: hidden;
+    }
+  
+/**
+ * THEME-SPECIFIC STYLES
+ *----------------------------------------------------------------------------*/
+body {
+  font-size: 24px;
+  background: #fff;
+  color: #52595D;
+}
+  h1 {
+    font-weight: normal;
+    font-size: 2.8em;
+    margin-bottom: 0;
+  }
+  h2 {
+    font-weight: normal;
+    text-transform: uppercase;
+  }
+    
+    h1 + h2 {
+      margin-top: 0;
+      color: #000;
+      font-size: 1.1em;
+    }
+  
+  ul {}
+    ul > li {
+      list-style-image: url(images/public.png);
+      margin-bottom: 0.5em;
+    }
+
+  div.slide {
+    background: #FFF;
+  }
+    div.slide > div.content {
+      padding: 90px 1em 1em 1em;
+    }
+    
+    /** SLIDE TYPES **/
+    
+    div[data-type=title] > div.content {
+      text-align: center;
+      padding-top: 90px;
+    }
+      div[data-type=title] h1 {
+        font-size: 7em;
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+        div[data-type=title] h2 em {
+          font-weight: bold;
+          font-style: normal;
+          margin-top: 0;
+        }
+    div[data-type=section] > div.content {
+      padding-top: 90px;
+    }
+    
+    /** SPECIFIC SLIDES **/
+    
+    div#what-is-github {
+      background-image: url(images/overview.png);
+      background-position: center bottom;
+      background-repeat: no-repeat;
+      background-size: 82% auto;
+    }
+    
+    div#github-is-for-working {}
+      div#github-is-for-working h2 {
+        text-transform: none;
+        text-align: right;
+        font-style: italic;
+      }
+
+      div#github-is-for-working div.content > ul {
+        margin-top: 10em;
+      }
+        div#github-is-for-working ul > li {
+        }
+
+          div#github-is-for-working ul ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            top: 230px;
+            left: 27px;
+          }
+            div#github-is-for-working ul ul > li {
+              list-style-image: none;
+              width: 200px;
+              height: 200px;
+              border-radius: 5px;
+              -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
+            }
+              div#github-is-for-working ul ul li img {
+                width: 100%;
+                height: 100%;
+                -webkit-border-radius: 5px;
+              }
+            
+              div#github-is-for-working div.content > ul > li:nth-of-type(1) ul {
+                left: 27px;
+              }
+              div#github-is-for-working div.content > ul > li:nth-of-type(2) ul {
+                left: 260px;
+              }
+              div#github-is-for-working div.content > ul > li:nth-of-type(3) ul {
+                left: 495px;
+              }
+
+    div#open-source-is-moving-to-github {
+      text-align: center;
+    }
+      div#open-source-is-moving-to-github ul {
+        list-style: none;
+        list-style-image: none;
+        margin: 1em;
+        padding: 0;
+        font-family: courier, mono;
+        line-height: 2em;
+      }
+        div#open-source-is-moving-to-github ul li {
+          display: inline-block;
+          margin: 0;
+          padding: 0 1em;
+        }
+
+    div#forking-on-github { }
+      div#forking-on-github img {
+        float: right;
+        width: 450px;
+        margin: 0 0 1em 1em;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+      }
+      
+    div#less-drunk-more-smart {}
+      div#less-drunk-more-smart img {
+        float: right;
+        width: 450px;
+        margin: 0 0 1em 1em;
+        border-radius: 5px;
+        -webkit-box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+      }
+
+  
